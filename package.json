@@ -1,0 +1,25 @@
+{
+  "name": "twitboard",
+  "version": "1.0.0",
+  "description": "a pinterest styled mood board for liked twitter posts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aliciaxw/twitboard.git"
+  },
+  "author": "Alicia Wang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aliciaxw/twitboard/issues"
+  },
+  "homepage": "https://github.com/aliciaxw/twitboard#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "oauth": "^0.9.15"
+  }
+}
