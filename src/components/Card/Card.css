@@ -1,0 +1,10 @@
+.card {
+  margin: 0.25em;
+}
+
+.img-container {
+  width: 150px;
+  height: 100px;
+  background-color: #A6B4BE;
+  border-radius: 10px;
+}

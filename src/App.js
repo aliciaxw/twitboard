@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import MasonryLayout from 'react-masonry-layout';
+import Card from './components/Card/Card';
+import Navbar from './components/Navbar/Navbar';
+
+class App extends Component {
+
+  state = {
+    perPage: 8,
+    items: Array(16).fill()
+  }
+
+  loadItems = () => {
+    this.setState({
+      items: this.state.items.concat(Array(this.state.perPage).fill())
+    });
+  }
+
+  sizes = [
+    { columns: 4, gutter: 5 }
+  ]
+
+  render() {
+    return (
+      <div className='app'>
+        <div><Navbar /></div>
+        <div className='content'>
+          <MasonryLayout id='gallery' infiniteScroll={this.loadItems} sizes={this.sizes}>
+          {this.state.items.map((v, i) => {
+            return <Card />
+          })}
+          </MasonryLayout>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
