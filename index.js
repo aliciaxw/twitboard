@@ -2,11 +2,13 @@ const oauth = require('oauth')
 const express = require('express')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
+const dotenv = require('dotenv')
 
 const path = require('path')
 const fs = require('fs')
 const { promisify } = require('util')
 
+dotenv.config()
 const COOKIE_SECRET = process.env.npm_config_cookie_secret || process.env.COOKIE_SECRET
 const TWITTER_CONSUMER_API_KEY = process.env.TWITTER_CONSUMER_API_KEY
 const TWITTER_CONSUMER_API_SECRET = process.env.TWITTER_CONSUMER_API_SECRET
@@ -18,8 +20,7 @@ const oauthConsumer = new oauth.OAuth(
     TWITTER_CONSUMER_API_KEY, TWITTER_CONSUMER_API_SECRET,
     '1.0A', 'http://127.0.0.1:3000/twitter/callback', 'HMAC-SHA1')
 
-main()
-    .catch(err => console.error(err.message, err))
+main().catch(err => console.error(err.message, err))
 
 async function main() {
     const app = express()
