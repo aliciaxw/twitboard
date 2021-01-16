@@ -32,16 +32,30 @@ async function main() {
     });
 
     app.get('/', async (req, res, next) => {
+        console.log('/ req.cookies', req.cookies)
         if (req.cookies && req.cookies.twitter_screen_name) {
+            console.log('/ authorized', req.cookies.twitter_screen_name)
             return res.send(TEMPLATE.replace('CONTENT', `
             <h1>Hello ${req.cookies.twitter_screen_name}</h1>
             <br>
             <a href="/twitter/logout">logout</a>
-        `))
+          `))
         }
         return next()
     })
+
     app.use(express.static(path.resolve(__dirname, 'client')))
+
+    // serve react app
+    // app.use(express.static(path.resolve(__dirname, 'client', 'build')))
+    // app.use(express.static('public'))
+
+    /** ROUTES **/
+    app.get('/api/screenname', async (req, res) => {
+        return res.send(req.cookies.twitter_screen_name || 'Log into Twitter')
+    })
+
+    /** AUTHENTICATION **/
 
     app.get('/twitter/logout', logout)
     function logout(req, res, next) {

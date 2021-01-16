@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import request from 'superagent'
 import './App.css';
 
 import MasonryLayout from 'react-masonry-layout';
@@ -28,9 +29,9 @@ class App extends Component {
         <div><Navbar /></div>
         <div className='content'>
           <MasonryLayout id='gallery' infiniteScroll={this.loadItems} sizes={this.sizes}>
-          {this.state.items.map((v, i) => {
-            return <Card />
-          })}
+            {this.state.items.map((v, i) => {
+              return <Card />
+            })}
           </MasonryLayout>
         </div>
       </div>
