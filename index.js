@@ -7,16 +7,16 @@ const path = require('path')
 const fs = require('fs')
 const { promisify } = require('util')
 
-const COOKIE_SECRET = process.env.COOKIE_SECRET
-const TWITTER_API_KEY = process.env.TWITTER_API_KEY
-const TWITTER_API_SECRET = process.env.TWITTER_API_SECRET
+const COOKIE_SECRET = process.env.npm_config_cookie_secret || process.env.COOKIE_SECRET
+const TWITTER_CONSUMER_API_KEY = process.env.TWITTER_CONSUMER_API_KEY
+const TWITTER_CONSUMER_API_SECRET = process.env.TWITTER_CONSUMER_API_SECRET
 
 const TEMPLATE = fs.readFileSync(path.resolve(__dirname, 'client', 'template.html'), { encoding: 'utf8' })
 
 const oauthConsumer = new oauth.OAuth(
     'https://twitter.com/oauth/request_token', 'https://twitter.com/oauth/access_token',
-    TWITTER_API_KEY, TWITTER_API_SECRET,
-    '1.0A', 'http://0.0.0.0:3000/twitter/callback', 'HMAC-SHA1')
+    TWITTER_CONSUMER_API_KEY, TWITTER_CONSUMER_API_SECRET,
+    '1.0A', 'http://127.0.0.1:3000/twitter/callback', 'HMAC-SHA1')
 
 main()
     .catch(err => console.error(err.message, err))
@@ -25,8 +25,10 @@ async function main() {
     const app = express()
     app.use(cookieParser())
     app.use(session({ secret: COOKIE_SECRET || 'secret' }))
-
-    app.listen(3000, () => console.log('listening on http://0.0.0.0:3000'))
+    app.use((req, res, next) => {
+        res.session = req.session;
+        next();
+    });
 
     app.get('/', async (req, res, next) => {
         console.log('/ req.cookies', req.cookies)
@@ -83,6 +85,8 @@ async function main() {
         console.log('user succesfully logged in with twitter', user.screen_name)
         req.session.save(() => res.redirect('/'))
     })
+
+    app.listen(3000, () => console.log('listening on http://127.0.0.1:3000'))
 }
 
 async function oauthGetUserById(userId, { oauthAccessToken, oauthAccessTokenSecret } = {}) {
